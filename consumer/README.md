@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS ...
 
 ---
 
-## 🔧 Example
+## Example
 
 ```
 GET http://questdb:9000/exec?query=CREATE TABLE IF NOT EXISTS my_table (...)
