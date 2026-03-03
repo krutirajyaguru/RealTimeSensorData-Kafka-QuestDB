@@ -259,5 +259,3 @@ No output ≠ broken job
 It’s waiting.
 
 ---
-
-# Summary
