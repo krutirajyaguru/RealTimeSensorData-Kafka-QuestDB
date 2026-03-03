@@ -1,0 +1,70 @@
+services:
+  broker:
+    image: apache/kafka:latest
+    hostname: broker
+    container_name: broker
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker:29093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+
+  producer:
+    build: ./producer
+    container_name: producer
+    depends_on:
+      - broker
+    volumes:
+      - ./producer/data:/data # <-- mount host ./data folder into container /data
+    
+
+  consumer:
+    build: ./consumer
+    container_name: consumer
+    depends_on:
+      - questdb
+      - broker
+
+  questdb:
+    image: questdb/questdb:latest
+    container_name: questdb
+    restart: always
+    ports:
+      - "9000:9000"  # Web Console & Ingestion (ILP)
+      - "8812:8812"  # Postgres Wire Protocol (SQL)
+    volumes:
+      - ./questdb_data:/var/lib/questdb
+    environment:
+      - QDB_PG_USER=admin
+      - QDB_PG_PASSWORD=quest
+
+  # questdb:
+  #   image: questdb/questdb:latest
+  #   container_name: questdb
+  #   ports:
+  #     - "9000:9000"   # Web UI / SQL
+  #     - "9009:9009"   # ILP TCP (Sender)
+    
+ 
+  # consumer:
+  #   build: ./consumer
+  #   depends_on:
+  #     - broker
+  #     - questdb
+  #   restart: always
+  #   environment:
+  #     QDB_ILP: "tcp://questdb:8812"
+#volumes:
+  #questdb-data:
