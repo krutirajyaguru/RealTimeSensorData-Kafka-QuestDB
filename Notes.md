@@ -75,7 +75,7 @@ Kafka/Redpanda provides:
 
 ---
 
-# 5. Your Current Problem (Dash + Python Threads)
+# 5. Problem (Dash + Python Threads)
 
 ## Problem
 
@@ -112,8 +112,6 @@ They are dashboards — not streaming engines.
 
 # 7. Goal
 
-You want:
-
 ✔ True real-time streaming  
 ✔ Fault tolerance  
 ✔ Resume from latest event  
@@ -123,7 +121,7 @@ You want:
 
 ---
 
-# 8. Recommended Production Architecture
+# 8. Production Architecture
 
 ```
 Sensor
