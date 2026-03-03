@@ -27,6 +27,7 @@ Sensor detects up to 16 objects per frame:
     +-----------+-----------+-----------+ ... +------------+
     | 0.12      | 0.955     | 0.33      | ... | 0.73       | ---> z_values
     +-----------+-----------+-----------+ ... +------------+
+
 Problems:
 - Hard to scale
 - Schema changes if object limit changes
